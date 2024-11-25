@@ -1,9 +1,11 @@
 # Northcoders News API
 
-For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/courses/be/nc-news).
+Welcome to my first Northcoders project! I'm building a news API with the skills I've learned so far.
 
+Please feel free to clone my project and run it locally, here are some instructions for you:
 
+- Create an environment file (.env.\*) for each of your databases, and connect to the relevant database with PGDATABASE=
 
---- 
+---
 
 This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
