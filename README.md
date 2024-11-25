@@ -9,6 +9,7 @@ Please feel free to clone my project and run it locally, here are some instructi
 - Install express
 
 - Install supertest as a developer dependency (if you want to write your own tests!)
+  - Install jest-sorted if necessary for your testing
 
 ---
 
