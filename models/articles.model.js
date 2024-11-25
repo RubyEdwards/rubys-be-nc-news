@@ -21,7 +21,20 @@ exports.fetchArticles = () => {
       ORDER BY created_at DESC;`
     )
     .then(({ rows }) => {
-      console.log(rows[0]);
+      return rows;
+    });
+};
+
+exports.fetchArticleComments = (id) => {
+  return db
+    .query(
+      `SELECT * FROM comments WHERE comments.article_id = $1 ORDER BY created_at DESC`,
+      [id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "article does not exist" });
+      }
       return rows;
     });
 };
