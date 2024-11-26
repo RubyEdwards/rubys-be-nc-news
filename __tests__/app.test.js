@@ -260,3 +260,55 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: Responds with the updated article based on requested article_id and inc_votes", () => {
+    const update = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(update)
+      .expect(200)
+      .then(({ body: { article } }) => {
+        expect(article).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: 1,
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: 105,
+          article_img_url: expect.any(String),
+        });
+      });
+  });
+  test("404: Responds with relevant error to a valid but non-existent id", () => {
+    const update = { inc_votes: 1 };
+    return request(app)
+      .patch("/api/articles/100")
+      .send(update)
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("article does not exist");
+      });
+  });
+  test("400: Responds with relevant error to an invalid inc_votes", () => {
+    const update = { inc_votes: "a" };
+    return request(app)
+      .patch("/api/articles/2")
+      .send(update)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+  test("400: Responds with relevant error to an invalid article id", () => {
+    const update = { inc_votes: 1 };
+    return request(app)
+      .patch("/api/articles/not-an-id")
+      .send(update)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+});
