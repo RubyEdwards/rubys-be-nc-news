@@ -28,7 +28,9 @@ exports.fetchArticles = () => {
 exports.fetchArticleComments = (id) => {
   return db
     .query(
-      `SELECT * FROM comments WHERE comments.article_id = $1 ORDER BY created_at DESC`,
+      `SELECT * FROM comments
+      WHERE comments.article_id = $1
+      ORDER BY created_at DESC`,
       [id]
     )
     .then(({ rows }) => {
@@ -45,8 +47,24 @@ exports.insertComment = (id, { username, body }) => {
   }
   return db
     .query(
-      "INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;",
+      `INSERT INTO comments (author, body, article_id)
+      VALUES ($1, $2, $3)
+      RETURNING *;`,
       [username, body, id]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
+};
+
+exports.updateArticle = (id, inc_votes) => {
+  return db
+    .query(
+      `UPDATE articles
+      SET votes = votes + $1
+      WHERE article_id = $2
+      RETURNING *;`,
+      [inc_votes, id]
     )
     .then(({ rows }) => {
       return rows[0];
