@@ -2,6 +2,7 @@ const {
   fetchArticle,
   fetchArticles,
   fetchArticleComments,
+  insertComment,
 } = require("../models/articles.model");
 
 exports.getArticle = (req, res, next) => {
@@ -30,6 +31,21 @@ exports.getArticleComments = (req, res, next) => {
   Promise.all(promises)
     .then(([comments]) => {
       res.status(200).send({ comments });
+    })
+    .catch(next);
+};
+
+exports.postComment = (req, res, next) => {
+  const { article_id } = req.params;
+  const newComment = req.body;
+  const promises = [
+    fetchArticle(article_id),
+    insertComment(article_id, newComment),
+  ];
+
+  Promise.all(promises)
+    .then((promisesResults) => {
+      res.status(201).send({ comment: promisesResults[1] });
     })
     .catch(next);
 };
