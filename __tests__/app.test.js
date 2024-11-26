@@ -53,7 +53,7 @@ describe("GET /api/topics", () => {
 });
 
 describe("GET /api/articles/:article_id", () => {
-  test("200: Responds with the relevant article object based on requested id", () => {
+  test("200: Responds with the relevant article object based on requested article_id", () => {
     return request(app)
       .get("/api/articles/7")
       .expect(200)
@@ -70,15 +70,15 @@ describe("GET /api/articles/:article_id", () => {
         });
       });
   });
-  test("404: Responds with relevant error to a valid but non-existent id", () => {
+  test("404: Responds with relevant error to a valid but non-existent article_id", () => {
     return request(app)
       .get("/api/articles/100")
       .expect(404)
       .then(({ body: { msg } }) => {
-        expect(msg).toBe("article does not exist");
+        expect(msg).toBe("not found");
       });
   });
-  test("400: Responds with relevant error to an invalid id", () => {
+  test("400: Responds with relevant error to an invalid article_id", () => {
     return request(app)
       .get("/api/articles/not-an-id")
       .expect(400)
@@ -161,7 +161,7 @@ describe("GET /api/articles/:article_id/comments", () => {
         });
       });
   });
-  test("GET: 200 Responds with an empty array to a valid article id with no comments", () => {
+  test("GET: 200 Responds with an empty array to a valid article_id with no comments", () => {
     return request(app)
       .get("/api/articles/2/comments")
       .expect(200)
@@ -169,15 +169,15 @@ describe("GET /api/articles/:article_id/comments", () => {
         expect(comments).toEqual([]);
       });
   });
-  test("404: Responds with relevant error to a valid but non-existent article id", () => {
+  test("404: Responds with relevant error to a valid but non-existent article_id", () => {
     return request(app)
       .get("/api/articles/100/comments")
       .expect(404)
       .then(({ body: { msg } }) => {
-        expect(msg).toBe("article does not exist");
+        expect(msg).toBe("not found");
       });
   });
-  test("400: Responds with relevant error to an invalid article id", () => {
+  test("400: Responds with relevant error to an invalid article_id", () => {
     return request(app)
       .get("/api/articles/not-an-id/comments")
       .expect(400)
@@ -208,7 +208,7 @@ describe("POST /api/articles/:article_id/comments", () => {
         });
       });
   });
-  test("404: Responds with relevant error to a valid but non-existent article id", () => {
+  test("404: Responds with relevant error to a valid but non-existent article_id", () => {
     const newComment = {
       username: "butter_bridge",
       body: "Don't you just LOVE commenting?",
@@ -218,7 +218,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(404)
       .then(({ body: { msg } }) => {
-        expect(msg).toBe("article does not exist");
+        expect(msg).toBe("not found");
       });
   });
   test("400: Responds with relevant error when comment does not contain required information", () => {
@@ -230,7 +230,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(400)
       .then(({ body: { msg } }) => {
-        expect(msg).toBe("this comment is missing some information");
+        expect(msg).toBe("bad request");
       });
   });
   test("400: Responds with relevant error to an invalid username", () => {
@@ -246,7 +246,7 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(msg).toBe("bad request");
       });
   });
-  test("400: Responds with relevant error to an invalid article id", () => {
+  test("400: Responds with relevant error to an invalid article_id", () => {
     const newComment = {
       username: "butter_bridge",
       body: "Don't you just LOVE commenting?",
@@ -281,14 +281,14 @@ describe("PATCH /api/articles/:article_id", () => {
         });
       });
   });
-  test("404: Responds with relevant error to a valid but non-existent id", () => {
+  test("404: Responds with relevant error to a valid but non-existent article_id", () => {
     const update = { inc_votes: 1 };
     return request(app)
       .patch("/api/articles/100")
       .send(update)
       .expect(404)
       .then(({ body: { msg } }) => {
-        expect(msg).toBe("article does not exist");
+        expect(msg).toBe("not found");
       });
   });
   test("400: Responds with relevant error to an invalid inc_votes", () => {
@@ -301,11 +301,33 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(msg).toBe("bad request");
       });
   });
-  test("400: Responds with relevant error to an invalid article id", () => {
+  test("400: Responds with relevant error to an invalid article_id", () => {
     const update = { inc_votes: 1 };
     return request(app)
       .patch("/api/articles/not-an-id")
       .send(update)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+});
+
+describe("DELETE /api/comments/:comment_id", () => {
+  test("204: Responds with code and no body", () => {
+    return request(app).delete("/api/comments/4").expect(204);
+  });
+  test("404: Responds with relevant error to a valid but non-existent comment_id", () => {
+    return request(app)
+      .delete("/api/comments/100")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("not found");
+      });
+  });
+  test("400: Responds with relevant error to an invalid comment_id", () => {
+    return request(app)
+      .delete("/api/comments/not-an-id")
       .expect(400)
       .then(({ body: { msg } }) => {
         expect(msg).toBe("bad request");
