@@ -35,8 +35,8 @@ describe("GET /api", () => {
   });
 });
 
-describe("/api/topics", () => {
-  test("GET 200: Responds with an array of topic objects", () => {
+describe("GET /api/topics", () => {
+  test("200: Responds with an array of topic objects", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
@@ -52,8 +52,8 @@ describe("/api/topics", () => {
   });
 });
 
-describe("/api/articles/:article_id", () => {
-  test("GET: 200 Responds with the relevant article object based on requested id", () => {
+describe("GET /api/articles/:article_id", () => {
+  test("200: Responds with the relevant article object based on requested id", () => {
     return request(app)
       .get("/api/articles/7")
       .expect(200)
@@ -70,7 +70,7 @@ describe("/api/articles/:article_id", () => {
         });
       });
   });
-  test("GET: 404 Responds with relevant error to a valid but non-existent id", () => {
+  test("404: Responds with relevant error to a valid but non-existent id", () => {
     return request(app)
       .get("/api/articles/100")
       .expect(404)
@@ -78,7 +78,7 @@ describe("/api/articles/:article_id", () => {
         expect(msg).toBe("article does not exist");
       });
   });
-  test("GET: 400 Responds with relevant error to an invalid id", () => {
+  test("400: Responds with relevant error to an invalid id", () => {
     return request(app)
       .get("/api/articles/not-an-id")
       .expect(400)
@@ -88,8 +88,8 @@ describe("/api/articles/:article_id", () => {
   });
 });
 
-describe("/api/articles", () => {
-  test("GET: 200 Responds with an array of article objects", () => {
+describe("GET /api/articles", () => {
+  test("200: Responds with an array of article objects", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -109,7 +109,7 @@ describe("/api/articles", () => {
         });
       });
   });
-  test("GET: 200 Response objects do not contain a body property", () => {
+  test("200: Response objects do not contain a body property", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -120,7 +120,7 @@ describe("/api/articles", () => {
         });
       });
   });
-  test("GET: 200 Response array is sorted by created_at (date) in descending order", () => {
+  test("200: Response array is sorted by created_at (date) in descending order", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -132,8 +132,8 @@ describe("/api/articles", () => {
   });
 });
 
-describe("/api/articles/:article_id/comments", () => {
-  test("GET: 200 Responds with an array of comments for the given article_id", () => {
+describe("GET /api/articles/:article_id/comments", () => {
+  test("200: Responds with an array of comments based on requested article_id", () => {
     return request(app)
       .get("/api/articles/5/comments")
       .expect(200)
@@ -151,17 +151,25 @@ describe("/api/articles/:article_id/comments", () => {
         });
       });
   });
-  test("GET: 200 Response array is served with most recent comments first (sorted by created_at (date) in descending order)", () => {
+  test("200: Response array is served with most recent comments first (sorted by created_at (date) in descending order)", () => {
     return request(app)
-      .get("/api/articles")
+      .get("/api/articles/5/comments")
       .expect(200)
-      .then(({ body: { articles } }) => {
-        expect(articles).toBeSortedBy("created_at", {
+      .then(({ body: { comments } }) => {
+        expect(comments).toBeSortedBy("created_at", {
           descending: true,
         });
       });
   });
-  test("GET: 404 Responds with relevant error to a valid but non-existent id", () => {
+  test("GET: 200 Responds with an empty array to a valid article id with no comments", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then(({ body: { comments } }) => {
+        expect(comments).toEqual([]);
+      });
+  });
+  test("404: Responds with relevant error to a valid but non-existent article id", () => {
     return request(app)
       .get("/api/articles/100/comments")
       .expect(404)
@@ -169,7 +177,7 @@ describe("/api/articles/:article_id/comments", () => {
         expect(msg).toBe("article does not exist");
       });
   });
-  test("GET: 400 Responds with relevant error to an invalid id", () => {
+  test("400: Responds with relevant error to an invalid article id", () => {
     return request(app)
       .get("/api/articles/not-an-id/comments")
       .expect(400)
