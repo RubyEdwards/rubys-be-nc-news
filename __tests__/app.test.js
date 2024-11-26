@@ -186,3 +186,77 @@ describe("GET /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("201: Responds with the newly created comment", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "Don't you just LOVE commenting?",
+    };
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body: { comment } }) => {
+        expect(comment).toMatchObject({
+          comment_id: expect.any(Number),
+          votes: expect.any(Number),
+          created_at: expect.any(String),
+          author: "butter_bridge",
+          body: "Don't you just LOVE commenting?",
+          article_id: 3,
+        });
+      });
+  });
+  test("404: Responds with relevant error to a valid but non-existent article id", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "Don't you just LOVE commenting?",
+    };
+    return request(app)
+      .post("/api/articles/100/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("article does not exist");
+      });
+  });
+  test("400: Responds with relevant error when comment does not contain required information", () => {
+    const newComment = {
+      body: "Don't you just LOVE commenting?",
+    };
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("this comment is missing some information");
+      });
+  });
+  test("400: Responds with relevant error to an invalid username", () => {
+    const newComment = {
+      username: "Patricia",
+      body: "Don't you just LOVE commenting?",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+  test("400: Responds with relevant error to an invalid article id", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "Don't you just LOVE commenting?",
+    };
+    return request(app)
+      .post("/api/articles/not-an-id/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+});

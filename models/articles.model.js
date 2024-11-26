@@ -35,3 +35,20 @@ exports.fetchArticleComments = (id) => {
       return rows;
     });
 };
+
+exports.insertComment = (id, { username, body }) => {
+  if (!username || !body) {
+    return Promise.reject({
+      status: 400,
+      msg: "this comment is missing some information",
+    });
+  }
+  return db
+    .query(
+      "INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *;",
+      [username, body, id]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
+};
