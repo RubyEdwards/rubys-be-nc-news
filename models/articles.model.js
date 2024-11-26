@@ -79,9 +79,4 @@ exports.removeComment = (id) => {
         return Promise.reject({ status: 404, msg: "not found" });
       }
     });
-  // .then((result) => {
-  //   if (result.rowCount === 0) {
-  //     return Promise.reject({ status: 404, msg: "team does not exist" });
-  //   }
-  // });
 };
