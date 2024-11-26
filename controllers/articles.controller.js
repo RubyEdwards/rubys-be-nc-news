@@ -21,8 +21,14 @@ exports.getArticles = (req, res) => {
 
 exports.getArticleComments = (req, res, next) => {
   const { article_id } = req.params;
-  fetchArticleComments(article_id)
-    .then((comments) => {
+  const promises = [fetchArticleComments(article_id)];
+
+  if (article_id) {
+    promises.push(fetchArticle(article_id));
+  }
+
+  Promise.all(promises)
+    .then(([comments]) => {
       res.status(200).send({ comments });
     })
     .catch(next);
