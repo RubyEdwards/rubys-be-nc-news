@@ -484,3 +484,42 @@ describe("GET /api/articles?sort_by=:column&&order=:order", () => {
       });
   });
 });
+
+describe("GET /api/articles?topic=:topic", () => {
+  test("200: Responds with an array of articles based on requested topic", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(1);
+        articles.forEach((article) => {
+          expect(article).toMatchObject({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: expect.any(Number),
+            topic: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(Number),
+          });
+        });
+      });
+  });
+  test("200: Responds with an empty array to a valid topic with no articles", () => {
+    return request(app)
+      .get("/api/articles?topic=paper")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toEqual([]);
+      });
+  });
+  test("404: Responds with relevant error to a non-existent topic", () => {
+    return request(app)
+      .get("/api/articles?topic=potatoes")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("not found");
+      });
+  });
+});
