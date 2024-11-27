@@ -115,6 +115,7 @@
       ]
     }
   },
+
   "POST /api/articles/:article_id/comments": {
     "description": "serves the new comment for a specific article based on requested article_id",
     "queries": [],
@@ -122,6 +123,7 @@
       "username": "butter_bridge",
       "body": "Don't you just LOVE commenting?"
     },
+
     "exampleResponse": {
       "comment": {
         "comment_id": 19,
@@ -129,6 +131,7 @@
         "article_id": 3,
         "author": "butter_bridge",
         "votes": 0,
+
         "created_at": "2024-11-26T12:33:05.964Z"
       }
     }
@@ -152,5 +155,6 @@
   },
   "DELETE /api/comments/:comment_id": {
     "description": "serves a 204 status and no content"
+
   }
 }
