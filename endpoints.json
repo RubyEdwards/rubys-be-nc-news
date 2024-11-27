@@ -47,6 +47,34 @@
       ]
     }
   },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": [],
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "butter_bridge",
+          "name": "jonny",
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+        },
+        {
+          "username": "icellusedkars",
+          "name": "sam",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+        },
+        {
+          "username": "rogersop",
+          "name": "paul",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
+        },
+        {
+          "username": "lurker",
+          "name": "do_nothing",
+          "avatar_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+        }
+      ]
+    }
+  },
   "GET /api/articles/:article_id": {
     "description": "serves a specific article based on id",
     "queries": [],
@@ -87,9 +115,15 @@
       ]
     }
   },
-"POST /api/articles/:article_id/comments": {
-    "description": "serves a new comment to be added to a specific article based on requested article_id",
+
+  "POST /api/articles/:article_id/comments": {
+    "description": "serves the new comment for a specific article based on requested article_id",
     "queries": [],
+    "expectedBody" : {
+      "username": "butter_bridge",
+      "body": "Don't you just LOVE commenting?"
+    },
+
     "exampleResponse": {
       "comment": {
         "comment_id": 19,
@@ -97,8 +131,30 @@
         "article_id": 3,
         "author": "butter_bridge",
         "votes": 0,
-        "created_at": "2024-11-26T12:26:09.210Z"
+
+        "created_at": "2024-11-26T12:33:05.964Z"
       }
     }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "serves an updated article based on requested article_id and inc_votes",
+    "queries": [],
+    "expectedBody" : { "inc_votes": 5 },
+    "exampleResponse": {
+      "article": {
+        "article_id": 1,
+        "title": "Living in the shadow of a great man",
+        "topic": "mitch",
+        "author": "butter_bridge",
+        "body": "I find this existence challenging",
+        "created_at": "2020-07-09T20:11:00.000Z",
+        "votes": 105,
+        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "serves a 204 status and no content"
+
   }
 }

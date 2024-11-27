@@ -11,7 +11,10 @@ const {
   getArticle,
   getArticleComments,
   postComment,
+  patchArticle,
+  deleteComment,
 } = require("./controllers/articles.controller");
+const { getUsers } = require("./controllers/users.controller");
 const app = express();
 app.use(express.json());
 
@@ -22,7 +25,14 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticle);
 app.get("/api/articles/:article_id/comments", getArticleComments);
+
+app.get("/api/users", getUsers);
+
 app.post("/api/articles/:article_id/comments", postComment);
+
+app.patch("/api/articles/:article_id", patchArticle);
+
+app.delete("/api/comments/:comment_id", deleteComment);
 
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "not found" });
