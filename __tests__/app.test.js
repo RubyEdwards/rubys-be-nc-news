@@ -161,7 +161,7 @@ describe("GET /api/articles/:article_id/comments", () => {
         });
       });
   });
-  test("GET: 200 Responds with an empty array to a valid article_id with no comments", () => {
+  test("200: Responds with an empty array to a valid article_id with no comments", () => {
     return request(app)
       .get("/api/articles/2/comments")
       .expect(200)
@@ -221,16 +221,16 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(msg).toBe("not found");
       });
   });
-  test("400: Responds with relevant error when comment does not contain required information", () => {
+  test("404: Responds with relevant error when comment does not contain required information", () => {
     const newComment = {
       body: "Don't you just LOVE commenting?",
     };
     return request(app)
       .post("/api/articles/2/comments")
       .send(newComment)
-      .expect(400)
+      .expect(404)
       .then(({ body: { msg } }) => {
-        expect(msg).toBe("bad request");
+        expect(msg).toBe("not found");
       });
   });
   test("400: Responds with relevant error to an invalid username", () => {
@@ -349,6 +349,138 @@ describe("GET /api/users", () => {
             avatar_url: expect.any(String),
           });
         });
+      });
+  });
+});
+
+describe("GET /api/articles?sort_by=:column", () => {
+  test("200: Responds with an array of all articles sorted by article_id", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("article_id", { descending: true });
+      });
+  });
+  test("200: Responds with an array of all articles sorted by title", () => {
+    return request(app)
+      .get("/api/articles?sort_by=title")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("title", { descending: true });
+      });
+  });
+  test("200: Responds with an array of all articles sorted by topic", () => {
+    return request(app)
+      .get("/api/articles?sort_by=topic")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("topic", { descending: true });
+      });
+  });
+  test("200: Responds with an array of all articles sorted by author", () => {
+    return request(app)
+      .get("/api/articles?sort_by=author")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("author", { descending: true });
+      });
+  });
+  test("200: Responds with an array of all articles sorted by votes", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("votes", { descending: true });
+      });
+  });
+  test("400: Responds with relevant error to an invalid sort_by", () => {
+    return request(app)
+      .get("/api/articles?sort_by=body")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+  test("400: Responds with relevant error to a non-existent sort_by", () => {
+    return request(app)
+      .get("/api/articles?sort_by=not-a-column")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+});
+
+describe("GET /api/articles?order=asc", () => {
+  test("200: Responds with array of all articles sorted by created_at in ascending order", () => {
+    return request(app)
+      .get("/api/articles?order=asc")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("created_at");
+      });
+  });
+  test("400: Responds with relevant error to an invalid order", () => {
+    return request(app)
+      .get("/api/articles?order=upside_down")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+});
+
+describe("GET /api/articles?sort_by=:column&&order=:order", () => {
+  test("200: Responds with an array of all articles sorted by article_id in ascending order", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_id&&order=asc")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("article_id");
+      });
+  });
+  test("200: Responds with an array of all articles sorted by title in descending order", () => {
+    return request(app)
+      .get("/api/articles?sort_by=title&&order=desc")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("title", { descending: true });
+      });
+  });
+  test("200: Responds with an array of all articles sorted by topic in ascending order", () => {
+    return request(app)
+      .get("/api/articles?sort_by=topic&&order=asc")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("topic");
+      });
+  });
+  test("200: Responds with an array of all articles sorted by author in descending order", () => {
+    return request(app)
+      .get("/api/articles?sort_by=author&&order=desc")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("author", { descending: true });
+      });
+  });
+  test("200: Responds with an array of all articles sorted by votes in ascending order", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&&order=asc")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(13);
+        expect(articles).toBeSortedBy("votes");
       });
   });
 });
