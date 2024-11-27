@@ -11,31 +11,41 @@ exports.fetchArticle = (id) => {
     });
 };
 
-exports.fetchArticles = (sort_by, order) => {
+exports.fetchArticles = (sort_by, order, topic) => {
   const validSortBy = ["article_id", "title", "topic", "author", "votes"];
   if (sort_by && !validSortBy.includes(sort_by)) {
     return Promise.reject({ status: 400, msg: "bad request" });
   }
 
-  let sqlQuery = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, article_img_url, COUNT(comments)::INT AS comment_count FROM articles
-      LEFT JOIN comments
-      ON articles.article_id = comments.article_id
-      GROUP BY articles.article_id
-      ORDER BY `;
+  let sqlQuery = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, article_img_url, COUNT(comments)::INT AS comment_count
+  FROM articles
+  LEFT JOIN comments
+  ON articles.article_id = comments.article_id `;
 
-  if (sort_by && order) {
-    sqlQuery += `${sort_by} ${order} `;
-  } else if (sort_by && !order) {
-    sqlQuery += `${sort_by} DESC `;
-  } else if (!sort_by && order) {
-    sqlQuery += `created_at ${order} `;
+  if (topic) {
+    sqlQuery += `WHERE topic = $1
+      GROUP BY articles.article_id `;
+    return db.query(sqlQuery, [topic]).then(({ rows }) => {
+      return rows;
+    });
   } else {
-    sqlQuery += `created_at DESC `;
-  }
+    sqlQuery += `GROUP BY articles.article_id
+        ORDER BY `;
 
-  return db.query(sqlQuery).then(({ rows }) => {
-    return rows;
-  });
+    if (sort_by && order) {
+      sqlQuery += `${sort_by} ${order} `;
+    } else if (sort_by && !order) {
+      sqlQuery += `${sort_by} DESC `;
+    } else if (!sort_by && order) {
+      sqlQuery += `created_at ${order} `;
+    } else {
+      sqlQuery += `created_at DESC `;
+    }
+
+    return db.query(sqlQuery).then(({ rows }) => {
+      return rows;
+    });
+  }
 };
 
 exports.fetchArticleComments = (id) => {
@@ -91,5 +101,16 @@ exports.removeComment = (id) => {
       if (rowCount === 0) {
         return Promise.reject({ status: 404, msg: "not found" });
       }
+    });
+};
+
+exports.fetchTopic = (slug) => {
+  return db
+    .query("SELECT * FROM topics WHERE slug = $1", [slug])
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      }
+      return rows[0];
     });
 };
