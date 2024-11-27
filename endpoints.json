@@ -118,6 +118,10 @@
   "POST /api/articles/:article_id/comments": {
     "description": "serves the new comment for a specific article based on requested article_id",
     "queries": [],
+    "expectedBody" : {
+      "username": "butter_bridge",
+      "body": "Don't you just LOVE commenting?"
+    },
     "exampleResponse": {
       "comment": {
         "comment_id": 19,
@@ -132,6 +136,7 @@
   "PATCH /api/articles/:article_id": {
     "description": "serves an updated article based on requested article_id and inc_votes",
     "queries": [],
+    "expectedBody" : { "inc_votes": 5 },
     "exampleResponse": {
       "article": {
         "article_id": 1,
