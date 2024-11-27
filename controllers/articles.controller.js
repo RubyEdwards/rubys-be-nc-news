@@ -16,19 +16,18 @@ exports.getArticle = (req, res, next) => {
     .catch(next);
 };
 
-exports.getArticles = (req, res) => {
-  fetchArticles().then((articles) => {
-    res.status(200).send({ articles });
-  });
+exports.getArticles = (req, res, next) => {
+  const { sort_by, order } = req.query;
+  fetchArticles(sort_by, order)
+    .then((articles) => {
+      res.status(200).send({ articles });
+    })
+    .catch(next);
 };
 
 exports.getArticleComments = (req, res, next) => {
   const { article_id } = req.params;
-  const promises = [fetchArticleComments(article_id)];
-
-  if (article_id) {
-    promises.push(fetchArticle(article_id));
-  }
+  const promises = [fetchArticleComments(article_id), fetchArticle(article_id)];
 
   Promise.all(promises)
     .then(([comments]) => {
@@ -56,12 +55,12 @@ exports.patchArticle = (req, res, next) => {
   const { article_id } = req.params;
   const { inc_votes } = req.body;
   const promises = [
-    fetchArticle(article_id),
     updateArticle(article_id, inc_votes),
+    fetchArticle(article_id),
   ];
 
   Promise.all(promises)
-    .then(([_, article]) => {
+    .then(([article]) => {
       res.status(200).send({ article });
     })
     .catch(next);
