@@ -5,6 +5,7 @@ const {
   insertComment,
   updateArticle,
   removeComment,
+  fetchTopic,
 } = require("../models/articles.model");
 
 exports.getArticle = (req, res, next) => {
@@ -17,9 +18,15 @@ exports.getArticle = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  const { sort_by, order } = req.query;
-  fetchArticles(sort_by, order)
-    .then((articles) => {
+  const { sort_by, order, topic } = req.query;
+  const promises = [fetchArticles(sort_by, order, topic)];
+
+  if (topic) {
+    promises.push(fetchTopic(topic));
+  }
+
+  Promise.all(promises)
+    .then(([articles]) => {
       res.status(200).send({ articles });
     })
     .catch(next);

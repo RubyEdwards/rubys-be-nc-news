@@ -13,7 +13,6 @@ const {
   postComment,
   patchArticle,
   deleteComment,
-  sortArticles,
 } = require("./controllers/articles.controller");
 const { getUsers } = require("./controllers/users.controller");
 const app = express();
