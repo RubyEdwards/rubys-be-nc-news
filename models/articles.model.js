@@ -11,18 +11,31 @@ exports.fetchArticle = (id) => {
     });
 };
 
-exports.fetchArticles = () => {
-  return db
-    .query(
-      `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, article_img_url, COUNT(comments)::INT AS comment_count FROM articles
+exports.fetchArticles = (sort_by, order) => {
+  const validSortBy = ["article_id", "title", "topic", "author", "votes"];
+  if (sort_by && !validSortBy.includes(sort_by)) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
+
+  let sqlQuery = `SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, article_img_url, COUNT(comments)::INT AS comment_count FROM articles
       LEFT JOIN comments
       ON articles.article_id = comments.article_id
       GROUP BY articles.article_id
-      ORDER BY created_at DESC;`
-    )
-    .then(({ rows }) => {
-      return rows;
-    });
+      ORDER BY `;
+
+  if (sort_by && order) {
+    sqlQuery += `${sort_by} ${order} `;
+  } else if (sort_by && !order) {
+    sqlQuery += `${sort_by} DESC `;
+  } else if (!sort_by && order) {
+    sqlQuery += `created_at ${order} `;
+  } else {
+    sqlQuery += `created_at DESC `;
+  }
+
+  return db.query(sqlQuery).then(({ rows }) => {
+    return rows;
+  });
 };
 
 exports.fetchArticleComments = (id) => {
@@ -41,8 +54,8 @@ exports.fetchArticleComments = (id) => {
 exports.insertComment = (id, { username, body }) => {
   if (!username || !body) {
     return Promise.reject({
-      status: 400,
-      msg: "bad request",
+      status: 404,
+      msg: "not found",
     });
   }
   return db
