@@ -1,38 +1,26 @@
 const express = require("express");
-const { getEndpoints } = require("./controllers/api.controller");
 const {
   handlePsqlErrors,
   handleCustomErrors,
   handleServerErrors,
 } = require("./errors");
-const { getTopics } = require("./controllers/topics.controller");
-const {
-  getArticles,
-  getArticle,
-  getArticleComments,
-  postComment,
-  patchArticle,
-  deleteComment,
-} = require("./controllers/articles.controller");
-const { getUsers } = require("./controllers/users.controller");
 const app = express();
+const apiRouter = require("./routes/api-router");
+const topicsRouter = require("./routes/topics-router");
+const articlesRouter = require("./routes/articles-router");
+const commentsRouter = require("./routes/comments-router");
+const usersRouter = require("./routes/users-router");
 app.use(express.json());
 
-app.get("/api", getEndpoints);
+app.use("/api", apiRouter);
 
-app.get("/api/topics", getTopics);
+app.use("/api/topics", topicsRouter);
 
-app.get("/api/articles", getArticles);
-app.get("/api/articles/:article_id", getArticle);
-app.get("/api/articles/:article_id/comments", getArticleComments);
+app.use("/api/articles", articlesRouter);
 
-app.get("/api/users", getUsers);
+app.use("/api/users", usersRouter);
 
-app.post("/api/articles/:article_id/comments", postComment);
-
-app.patch("/api/articles/:article_id", patchArticle);
-
-app.delete("/api/comments/:comment_id", deleteComment);
+app.use("/api/comments", commentsRouter);
 
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "not found" });
