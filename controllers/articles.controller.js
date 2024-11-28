@@ -2,11 +2,10 @@ const {
   fetchArticle,
   fetchArticles,
   fetchArticleComments,
-  insertComment,
+  insertArticleComment,
   updateArticle,
-  removeComment,
-  fetchTopic,
 } = require("../models/articles.model");
+const { fetchTopic } = require("../models/topics.model");
 
 exports.getArticle = (req, res, next) => {
   const { article_id } = req.params;
@@ -43,12 +42,12 @@ exports.getArticleComments = (req, res, next) => {
     .catch(next);
 };
 
-exports.postComment = (req, res, next) => {
+exports.postArticleComment = (req, res, next) => {
   const { article_id } = req.params;
   const newComment = req.body;
   const promises = [
     fetchArticle(article_id),
-    insertComment(article_id, newComment),
+    insertArticleComment(article_id, newComment),
   ];
 
   Promise.all(promises)
@@ -69,15 +68,6 @@ exports.patchArticle = (req, res, next) => {
   Promise.all(promises)
     .then(([article]) => {
       res.status(200).send({ article });
-    })
-    .catch(next);
-};
-
-exports.deleteComment = (req, res, next) => {
-  const { comment_id } = req.params;
-  removeComment(comment_id)
-    .then(() => {
-      res.status(204).send();
     })
     .catch(next);
 };

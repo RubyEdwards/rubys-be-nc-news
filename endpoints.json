@@ -75,9 +75,23 @@
       ]
     }
   },
-  "GET /api/articles/:article_id": {
-    "description": "serves a specific article based on id",
+  "GET /api/users/:username": {
+    "description": "serves a specific user based on username",
     "queries": [],
+    "exampleUsername" : "icellusedkars",
+    "exampleResponse": {
+      "user": {
+        "username": "icellusedkars",
+        "name": "sam",
+        "avatar_url":
+          "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+      }
+    }
+  },  
+  "GET /api/articles/:article_id": {
+    "description": "serves a specific article based on requested article_id",
+    "queries": [],
+    "exampleArticleId" : "7",
     "exampleResponse": {
       "article": {
         "article_id": 7,
@@ -94,6 +108,7 @@
   "GET /api/articles/:article_id/comments": {
     "description": "serves the comments for a specific article based on requested article_id",
     "queries": [],
+    "exampleArticleId" : "5",
     "exampleResponse": {
       "comments": [
         {
@@ -119,6 +134,7 @@
   "POST /api/articles/:article_id/comments": {
     "description": "serves the new comment for a specific article based on requested article_id",
     "queries": [],
+    "exampleArticleId" : "3",
     "expectedBody" : {
       "username": "butter_bridge",
       "body": "Don't you just LOVE commenting?"
@@ -137,8 +153,9 @@
     }
   },
   "PATCH /api/articles/:article_id": {
-    "description": "serves an updated article based on requested article_id and inc_votes",
+    "description": "serves an updated article based on requested article_id and inc_votes in body",
     "queries": [],
+    "exampleArticleId" : "1",
     "expectedBody" : { "inc_votes": 5 },
     "exampleResponse": {
       "article": {
@@ -155,6 +172,5 @@
   },
   "DELETE /api/comments/:comment_id": {
     "description": "serves a 204 status and no content"
-
   }
 }
