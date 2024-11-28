@@ -101,3 +101,27 @@ exports.updateArticle = (id, inc_votes) => {
       return rows[0];
     });
 };
+
+exports.insertArticle = ({ author, title, body, topic, article_img_url }) => {
+  if (!author || !title || !body || !topic) {
+    return Promise.reject({
+      status: 404,
+      msg: "not found",
+    });
+  }
+  let sqlQuery = `INSERT INTO articles (author, title, body, topic`;
+  const queryValues = [author, title, body, topic];
+  if (!article_img_url) {
+    sqlQuery += `)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;`;
+  } else {
+    sqlQuery += `, article_img_url)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *;`;
+    queryValues.push(article_img_url);
+  }
+  return db.query(sqlQuery, queryValues).then(({ rows }) => {
+    return rows[0];
+  });
+};
