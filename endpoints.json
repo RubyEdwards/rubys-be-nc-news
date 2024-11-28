@@ -9,44 +9,6 @@
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
-  "GET /api/articles": {
-    "description": "serves an array of all articles (with no body, in descending order as default)",
-    "queries": ["author", "topic", "sort_by", "order"],
-    "exampleResponse": {
-      "articles": [
-        {
-          "author": "icellusedkars",
-          "title": "Eight pug gifs that remind me of mitch",
-          "article_id": 3,
-          "topic": "mitch",
-          "created_at": "2020-11-03T09:12:00.000Z",
-          "votes": 0,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-          "comment_count": 2
-        },
-        {
-          "author": "icellusedkars",
-          "title": "A",
-          "article_id": 6,
-          "topic": "mitch",
-          "created_at": "2020-10-18T01:00:00.000Z",
-          "votes": 0,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-          "comment_count": 1
-        },
-        {
-          "author": "icellusedkars",
-          "title": "Sony Vaio; or, The Laptop",
-          "article_id": 2,
-          "topic": "mitch",
-          "created_at": "2020-10-16T05:03:00.000Z",
-          "votes": 0,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-          "comment_count": 0
-        }
-      ]
-    }
-  },
   "GET /api/users": {
     "description": "serves an array of all users",
     "queries": [],
@@ -88,6 +50,44 @@
       }
     }
   },  
+  "GET /api/articles": {
+    "description": "serves an array of all articles (with no body, in descending order as default)",
+    "queries": ["author", "topic", "sort_by", "order"],
+    "exampleResponse": {
+      "articles": [
+        {
+          "author": "icellusedkars",
+          "title": "Eight pug gifs that remind me of mitch",
+          "article_id": 3,
+          "topic": "mitch",
+          "created_at": "2020-11-03T09:12:00.000Z",
+          "votes": 0,
+          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+          "comment_count": 2
+        },
+        {
+          "author": "icellusedkars",
+          "title": "A",
+          "article_id": 6,
+          "topic": "mitch",
+          "created_at": "2020-10-18T01:00:00.000Z",
+          "votes": 0,
+          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+          "comment_count": 1
+        },
+        {
+          "author": "icellusedkars",
+          "title": "Sony Vaio; or, The Laptop",
+          "article_id": 2,
+          "topic": "mitch",
+          "created_at": "2020-10-16T05:03:00.000Z",
+          "votes": 0,
+          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+          "comment_count": 0
+        }
+      ]
+    }
+  },
   "GET /api/articles/:article_id": {
     "description": "serves a specific article based on requested article_id",
     "queries": [],
@@ -101,6 +101,24 @@
         "body": "I was hungry.",
         "created_at": "2020-01-07T14:08:00.000Z",
         "votes": 0,
+        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+      }
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "serves an updated article based on requested article_id and inc_votes in body",
+    "queries": [],
+    "exampleArticleId" : "1",
+    "expectedBody" : { "inc_votes": 5 },
+    "exampleResponse": {
+      "article": {
+        "article_id": 1,
+        "title": "Living in the shadow of a great man",
+        "topic": "mitch",
+        "author": "butter_bridge",
+        "body": "I find this existence challenging",
+        "created_at": "2020-07-09T20:11:00.000Z",
+        "votes": 105,
         "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
       }
     }
@@ -130,7 +148,6 @@
       ]
     }
   },
-
   "POST /api/articles/:article_id/comments": {
     "description": "serves the new comment for a specific article based on requested article_id",
     "queries": [],
@@ -152,21 +169,19 @@
       }
     }
   },
-  "PATCH /api/articles/:article_id": {
-    "description": "serves an updated article based on requested article_id and inc_votes in body",
+  "PATCH /api/comments/:comment_id": {
+    "description": "serves an updated comment based on requested comment_id and inc_votes in body",
     "queries": [],
-    "exampleArticleId" : "1",
+    "exampleCommentId" : "1",
     "expectedBody" : { "inc_votes": 5 },
     "exampleResponse": {
-      "article": {
-        "article_id": 1,
-        "title": "Living in the shadow of a great man",
-        "topic": "mitch",
-        "author": "butter_bridge",
-        "body": "I find this existence challenging",
-        "created_at": "2020-07-09T20:11:00.000Z",
-        "votes": 105,
-        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+      "comment": {
+          "comment_id": 1,
+          "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+          "article_id": 9,
+          "author": "butter_bridge",
+          "votes": 21,
+          "created_at": "2020-04-06T12:17:00.000Z"
       }
     }
   },

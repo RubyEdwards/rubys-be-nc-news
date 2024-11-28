@@ -263,7 +263,7 @@ describe("POST /api/articles/:article_id/comments", () => {
 });
 
 describe("PATCH /api/articles/:article_id", () => {
-  test("200: Responds with the updated article based on requested article_id and inc_votes", () => {
+  test("200: Responds with the updated article based on requested article_id and inc_votes in body", () => {
     const update = { inc_votes: 5 };
     return request(app)
       .patch("/api/articles/1")
@@ -545,6 +545,56 @@ describe("GET /api/users/:username", () => {
       .expect(404)
       .then(({ body: { msg } }) => {
         expect(msg).toBe("not found");
+      });
+  });
+});
+
+describe("PATCH /api/comments/:comment_id", () => {
+  test("200: Responds with the updated article based on requested article_id and inc_votes in body", () => {
+    const update = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/comments/1")
+      .send(update)
+      .expect(200)
+      .then(({ body: { comment } }) => {
+        expect(comment).toMatchObject({
+          comment_id: 1,
+          votes: 21,
+          created_at: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          article_id: expect.any(Number),
+        });
+      });
+  });
+  test("404: Responds with relevant error to a valid but non-existent comment_id", () => {
+    const update = { inc_votes: 1 };
+    return request(app)
+      .patch("/api/comments/100")
+      .send(update)
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("not found");
+      });
+  });
+  test("400: Responds with relevant error to an invalid inc_votes", () => {
+    const update = { inc_votes: "a" };
+    return request(app)
+      .patch("/api/comments/2")
+      .send(update)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+  test("400: Responds with relevant error to an invalid comment_id", () => {
+    const update = { inc_votes: 1 };
+    return request(app)
+      .patch("/api/comments/not-an-id")
+      .send(update)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
       });
   });
 });
