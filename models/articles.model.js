@@ -69,7 +69,7 @@ exports.fetchArticleComments = (id) => {
     });
 };
 
-exports.insertComment = (id, { username, body }) => {
+exports.insertArticleComment = (id, { username, body }) => {
   if (!username || !body) {
     return Promise.reject({
       status: 404,
@@ -98,27 +98,6 @@ exports.updateArticle = (id, inc_votes) => {
       [inc_votes, id]
     )
     .then(({ rows }) => {
-      return rows[0];
-    });
-};
-
-exports.removeComment = (id) => {
-  return db
-    .query("DELETE FROM comments WHERE comment_id = $1;", [id])
-    .then(({ rowCount }) => {
-      if (rowCount === 0) {
-        return Promise.reject({ status: 404, msg: "not found" });
-      }
-    });
-};
-
-exports.fetchTopic = (slug) => {
-  return db
-    .query("SELECT * FROM topics WHERE slug = $1", [slug])
-    .then(({ rows }) => {
-      if (!rows.length) {
-        return Promise.reject({ status: 404, msg: "not found" });
-      }
       return rows[0];
     });
 };
