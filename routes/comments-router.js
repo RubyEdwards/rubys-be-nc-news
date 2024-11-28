@@ -1,4 +1,4 @@
-const { deleteComment } = require("../controllers/articles.controller");
+const { deleteComment } = require("../controllers/comments.controller");
 
 const commentsRouter = require("express").Router();
 
