@@ -549,7 +549,7 @@ describe("GET /api/users/:username", () => {
   });
 });
 
-describe.only("PATCH /api/comments/:comment_id", () => {
+describe("PATCH /api/comments/:comment_id", () => {
   test("200: Responds with the updated article based on requested article_id and inc_votes in body", () => {
     const update = { inc_votes: 5 };
     return request(app)
