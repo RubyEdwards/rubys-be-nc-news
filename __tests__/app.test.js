@@ -524,3 +524,27 @@ describe("GET /api/articles?topic=:topic", () => {
       });
   });
 });
+
+describe("GET /api/users/:username", () => {
+  test("200: Responds with the relevant user object based on requested username", () => {
+    return request(app)
+      .get("/api/users/icellusedkars")
+      .expect(200)
+      .then(({ body: { user } }) => {
+        expect(user).toMatchObject({
+          username: "icellusedkars",
+          name: "sam",
+          avatar_url:
+            "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+        });
+      });
+  });
+  test("404: Responds with relevant error to a non-existent username", () => {
+    return request(app)
+      .get("/api/users/patricia")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("not found");
+      });
+  });
+});
