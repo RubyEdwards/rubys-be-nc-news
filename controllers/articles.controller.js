@@ -4,6 +4,7 @@ const {
   fetchArticleComments,
   insertArticleComment,
   updateArticle,
+  insertArticle,
 } = require("../models/articles.model");
 const { fetchTopic } = require("../models/topics.model");
 
@@ -68,6 +69,17 @@ exports.patchArticle = (req, res, next) => {
   Promise.all(promises)
     .then(([article]) => {
       res.status(200).send({ article });
+    })
+    .catch(next);
+};
+
+exports.postArticle = (req, res, next) => {
+  const newArticle = req.body;
+  insertArticle(newArticle)
+    .then(({ article_id }) => {
+      fetchArticle(article_id).then((article) => {
+        res.status(201).send({ article });
+      });
     })
     .catch(next);
 };
