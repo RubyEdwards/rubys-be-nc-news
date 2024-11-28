@@ -598,3 +598,104 @@ describe("PATCH /api/comments/:comment_id", () => {
       });
   });
 });
+
+describe("POST /api/articles", () => {
+  test("201: Responds with the newly created article (without artcle_img_url)", () => {
+    const newArticle = {
+      author: "rogersop",
+      title: "Bananas are the best fruit",
+      body: "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
+      topic: "cats",
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(201)
+      .then(({ body: { article } }) => {
+        expect(article).toMatchObject({
+          author: "rogersop",
+          title: "Bananas are the best fruit",
+          article_id: expect.any(Number),
+          body: "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
+          topic: "cats",
+          created_at: expect.any(String),
+          votes: 0,
+          article_img_url:
+            "https://images.pexels.com/photos/97050/pexels-photo-97050.jpeg?w=700&h=700",
+          comment_count: 0,
+        });
+      });
+  });
+  test("201: Responds with the newly created article (with artcle_img_url)", () => {
+    const newArticle = {
+      author: "rogersop",
+      title: "Bananas are the best fruit",
+      body: "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
+      topic: "cats",
+      article_img_url:
+        "https://media.post.rvohealth.io/wp-content/uploads/2020/09/bananas-732x549-thumbnail.jpg",
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(201)
+      .then(({ body: { article } }) => {
+        expect(article).toMatchObject({
+          author: "rogersop",
+          title: "Bananas are the best fruit",
+          article_id: expect.any(Number),
+          body: "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
+          topic: "cats",
+          created_at: expect.any(String),
+          votes: 0,
+          article_img_url:
+            "https://media.post.rvohealth.io/wp-content/uploads/2020/09/bananas-732x549-thumbnail.jpg",
+          comment_count: 0,
+        });
+      });
+  });
+  test("404: Responds with relevant error when article does not contain minimum required information", () => {
+    const newArticle = {
+      author: "rogersop",
+      title: "Bananas are the best fruit",
+      topic: "cats",
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("not found");
+      });
+  });
+  test("400: Responds with relevant error to an invalid username", () => {
+    const newComment = {
+      author: "Patricia",
+      title: "Bananas are the best fruit",
+      body: "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
+      topic: "cats",
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newComment)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+  test("400: Responds with relevant error to an invalid topic", () => {
+    const newComment = {
+      author: "rogersop",
+      title: "Bananas are the best fruit",
+      body: "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
+      topic: "bananas",
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newComment)
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+});
