@@ -16,3 +16,22 @@ exports.fetchTopic = (slug) => {
       return rows[0];
     });
 };
+
+exports.insertTopic = ({ slug, description }) => {
+  if (!slug || !description) {
+    return Promise.reject({
+      status: 404,
+      msg: "not found",
+    });
+  }
+  return db
+    .query(
+      `INSERT INTO topics (slug, description)
+      VALUES ($1, $2)
+      RETURNING *;`,
+      [slug, description]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
+};
