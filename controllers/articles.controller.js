@@ -7,6 +7,7 @@ const {
   insertArticle,
   paginate,
   countArticles,
+  countComments,
 } = require("../models/articles.model");
 const { fetchTopic } = require("../models/topics.model");
 
@@ -39,11 +40,16 @@ exports.getArticles = (req, res, next) => {
 
 exports.getArticleComments = (req, res, next) => {
   const { article_id } = req.params;
-  const promises = [fetchArticleComments(article_id), fetchArticle(article_id)];
+  const { limit, p } = req.query;
+  const promises = [
+    fetchArticleComments(article_id, limit, p),
+    countComments(article_id),
+    fetchArticle(article_id),
+  ];
 
   Promise.all(promises)
-    .then(([comments]) => {
-      res.status(200).send({ comments });
+    .then(([comments, total_count]) => {
+      res.status(200).send({ comments, total_count });
     })
     .catch(next);
 };
