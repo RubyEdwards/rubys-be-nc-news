@@ -52,7 +52,7 @@
   },  
   "GET /api/articles": {
     "description": "serves an array of all articles (with no body, in descending order as default)",
-    "queries": ["author", "topic", "sort_by", "order"],
+    "queries": ["topic", "sort_by", "order", "p", "limit"],
     "exampleResponse": {
       "articles": [
         {
@@ -180,7 +180,6 @@
       "username": "butter_bridge",
       "body": "Don't you just LOVE commenting?"
     },
-
     "exampleResponse": {
       "comment": {
         "comment_id": 19,
