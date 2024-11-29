@@ -507,6 +507,19 @@ describe("/api/articles/:article_id", () => {
     test("204: Responds with code and no body", () => {
       return request(app).delete("/api/articles/1").expect(204);
     });
+    test("404: Responds with code and no body (check comments are deleted)", () => {
+      return request(app)
+        .delete("/api/articles/1")
+        .expect(204)
+        .then(() => {
+          return request(app)
+            .get("/api/articles/1/comments")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("not found");
+            });
+        });
+    });
     test("404: Responds with relevant error to a valid but non-existent comment_id", () => {
       return request(app)
         .delete("/api/articles/100")
