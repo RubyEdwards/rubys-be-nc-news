@@ -149,7 +149,7 @@
   },
   "GET /api/articles/:article_id/comments": {
     "description": "serves the comments for a specific article based on requested article_id",
-    "queries": [],
+    "queries": ["limit", "p"],
     "exampleArticleId" : "5",
     "exampleResponse": {
       "comments": [
