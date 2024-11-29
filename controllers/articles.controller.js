@@ -5,6 +5,8 @@ const {
   insertArticleComment,
   updateArticle,
   insertArticle,
+  paginate,
+  countArticles,
 } = require("../models/articles.model");
 const { fetchTopic } = require("../models/topics.model");
 
@@ -18,16 +20,19 @@ exports.getArticle = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  const { sort_by, order, topic } = req.query;
-  const promises = [fetchArticles(sort_by, order, topic)];
+  const { sort_by, order, topic, limit, p } = req.query;
+  const promises = [
+    fetchArticles(sort_by, order, topic, limit, p),
+    countArticles(),
+  ];
 
   if (topic) {
     promises.push(fetchTopic(topic));
   }
 
   Promise.all(promises)
-    .then(([articles]) => {
-      res.status(200).send({ articles });
+    .then(([articles, total_count]) => {
+      res.status(200).send({ articles, total_count });
     })
     .catch(next);
 };

@@ -19,9 +19,30 @@ exports.fetchArticle = (id) => {
     });
 };
 
-exports.fetchArticles = (sort_by, order, topic) => {
-  const validSortBy = ["article_id", "title", "topic", "author", "votes"];
-  if (sort_by && !validSortBy.includes(sort_by)) {
+exports.fetchArticles = (
+  sort_by = "created_at",
+  order = "desc",
+  topic,
+  limit = 10,
+  p = 1
+) => {
+  const validSortBy = [
+    "created_at",
+    "article_id",
+    "title",
+    "topic",
+    "author",
+    "votes",
+  ];
+
+  const validLimit = Number(limit);
+  const validPage = Number(p);
+  const offsetBy = limit * (p - 1);
+
+  if (!validSortBy.includes(sort_by)) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
+  if (isNaN(validLimit) || isNaN(validPage)) {
     return Promise.reject({ status: 400, msg: "bad request" });
   }
 
@@ -38,19 +59,19 @@ exports.fetchArticles = (sort_by, order, topic) => {
     });
   } else {
     sqlQuery += `GROUP BY articles.article_id
-        ORDER BY `;
+        ORDER BY ${sort_by} ${order} LIMIT $1 `;
 
-    if (sort_by && order) {
-      sqlQuery += `${sort_by} ${order} `;
-    } else if (sort_by && !order) {
-      sqlQuery += `${sort_by} DESC `;
-    } else if (!sort_by && order) {
-      sqlQuery += `created_at ${order} `;
-    } else {
-      sqlQuery += `created_at DESC `;
+    if (p > 1) {
+      sqlQuery += `OFFSET $2 `;
+      return db.query(sqlQuery, [limit, offsetBy]).then(({ rows }) => {
+        if (!rows.length) {
+          return Promise.reject({ status: 404, msg: "not found" });
+        }
+        return rows;
+      });
     }
 
-    return db.query(sqlQuery).then(({ rows }) => {
+    return db.query(sqlQuery, [limit]).then(({ rows }) => {
       return rows;
     });
   }
@@ -124,4 +145,12 @@ exports.insertArticle = ({ author, title, body, topic, article_img_url }) => {
   return db.query(sqlQuery, queryValues).then(({ rows }) => {
     return rows[0];
   });
+};
+
+exports.countArticles = () => {
+  return db
+    .query(`SELECT COUNT(articles)::INT FROM articles`)
+    .then(({ rows }) => {
+      return rows[0].count;
+    });
 };
