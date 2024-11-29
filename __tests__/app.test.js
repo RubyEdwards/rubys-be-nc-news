@@ -813,3 +813,25 @@ describe("POST /api/topics", () => {
       });
   });
 });
+
+describe("DELETE /api/articles/:article_id", () => {
+  test("204: Responds with code and no body", () => {
+    return request(app).delete("/api/articles/1").expect(204);
+  });
+  test("404: Responds with relevant error to a valid but non-existent comment_id", () => {
+    return request(app)
+      .delete("/api/articles/100")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("not found");
+      });
+  });
+  test("400: Responds with relevant error to an invalid comment_id", () => {
+    return request(app)
+      .delete("/api/articles/not-an-id")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("bad request");
+      });
+  });
+});
