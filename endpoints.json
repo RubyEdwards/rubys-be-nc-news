@@ -210,5 +210,19 @@
   },
   "DELETE /api/comments/:comment_id": {
     "description": "serves a 204 status and no content"
+  },
+  "POST /api/topics": {
+    "description": "serves the new topic",
+    "queries": [],
+    "expectedBody" : {
+      "slug": "bananas",
+      "description": "the best fruit in the world"
+    },
+    "exampleResponse": {
+      "topic": {
+        "slug": "bananas",
+        "description": "the best fruit in the world"
+      }
+    }
   }
 }

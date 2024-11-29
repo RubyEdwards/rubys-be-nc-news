@@ -782,3 +782,34 @@ describe("GET /api/articles/:article_id/comments?limit=:num", () => {
       });
   });
 });
+
+describe("POST /api/topics", () => {
+  test("201: Responds with the newly created topic", () => {
+    const newTopic = {
+      slug: "bananas",
+      description: "the best fruit in the world",
+    };
+    return request(app)
+      .post("/api/topics")
+      .send(newTopic)
+      .expect(201)
+      .then(({ body: { topic } }) => {
+        expect(topic).toMatchObject({
+          slug: "bananas",
+          description: "the best fruit in the world",
+        });
+      });
+  });
+  test("404: Responds with relevant error when topic does not contain required information", () => {
+    const newTopic = {
+      slug: "bananas",
+    };
+    return request(app)
+      .post("/api/topics")
+      .send(newTopic)
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("not found");
+      });
+  });
+});
