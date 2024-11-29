@@ -5,7 +5,6 @@ const {
   insertArticleComment,
   updateArticle,
   insertArticle,
-  paginate,
   countArticles,
   countComments,
 } = require("../models/articles.model");
