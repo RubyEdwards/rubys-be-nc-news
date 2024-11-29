@@ -707,7 +707,7 @@ describe("GET /api/articles?limit=:num", () => {
   });
 });
 
-describe.only("GET /api/articles/:article_id/comments?limit=:num", () => {
+describe("GET /api/articles/:article_id/comments?limit=:num", () => {
   test("200: Responds with an array of 10 comment objects as default", () => {
     return request(app)
       .get("/api/articles/1/comments")
