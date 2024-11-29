@@ -77,17 +77,31 @@ exports.fetchArticles = (
   }
 };
 
-exports.fetchArticleComments = (id) => {
-  return db
-    .query(
-      `SELECT * FROM comments
+exports.fetchArticleComments = (id, limit = 10, p = 1) => {
+  const validLimit = Number(limit);
+  const validPage = Number(p);
+  const offsetBy = limit * (p - 1);
+
+  if (isNaN(validLimit) || isNaN(validPage)) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
+
+  let sqlQuery = `SELECT * FROM comments
       WHERE comments.article_id = $1
-      ORDER BY created_at DESC`,
-      [id]
-    )
-    .then(({ rows }) => {
+      ORDER BY created_at DESC LIMIT $2`;
+
+  if (p > 1) {
+    sqlQuery += `OFFSET $3 `;
+    return db.query(sqlQuery, [id, limit, offsetBy]).then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "not found" });
+      }
       return rows;
     });
+  }
+  return db.query(sqlQuery, [id, limit]).then(({ rows }) => {
+    return rows;
+  });
 };
 
 exports.insertArticleComment = (id, { username, body }) => {
@@ -150,6 +164,16 @@ exports.insertArticle = ({ author, title, body, topic, article_img_url }) => {
 exports.countArticles = () => {
   return db
     .query(`SELECT COUNT(articles)::INT FROM articles`)
+    .then(({ rows }) => {
+      return rows[0].count;
+    });
+};
+
+exports.countComments = (id) => {
+  return db
+    .query(`SELECT COUNT(comments)::INT FROM comments WHERE article_id = $1`, [
+      id,
+    ])
     .then(({ rows }) => {
       return rows[0].count;
     });
