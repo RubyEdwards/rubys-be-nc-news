@@ -33,6 +33,7 @@ exports.fetchArticles = (
     "topic",
     "author",
     "votes",
+    "comment_count",
   ];
 
   const validLimit = Number(limit);
