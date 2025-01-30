@@ -6,7 +6,12 @@
     "description": "serves an array of all topics",
     "queries": [],
     "exampleResponse": {
-      "topics": [{ "slug": "football", "description": "Footie!" }]
+      "topics": [
+        {
+          "slug": "football",
+          "description": "Footie!"
+        }
+      ]
     }
   },
   "GET /api/users": {
@@ -40,19 +45,24 @@
   "GET /api/users/:username": {
     "description": "serves a specific user based on username",
     "queries": [],
-    "exampleUsername" : "icellusedkars",
+    "exampleUsername": "icellusedkars",
     "exampleResponse": {
       "user": {
         "username": "icellusedkars",
         "name": "sam",
-        "avatar_url":
-          "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+        "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
       }
     }
-  },  
+  },
   "GET /api/articles": {
     "description": "serves an array of all articles (with no body, in descending order as default)",
-    "queries": ["topic", "sort_by", "order", "p", "limit"],
+    "queries": [
+      "topic",
+      "sort_by",
+      "order",
+      "p",
+      "limit"
+    ],
     "exampleResponse": {
       "articles": [
         {
@@ -91,13 +101,12 @@
   "POST /api/articles": {
     "description": "serves the new article for a specific article based on request body",
     "queries": [],
-    "expectedBody" : {
+    "expectedBody": {
       "author": "rogersop",
       "title": "Bananas are the best fruit",
       "body": "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
       "topic": "cats"
     },
-
     "exampleResponse": {
       "article": {
         "author": "rogersop",
@@ -115,7 +124,7 @@
   "GET /api/articles/:article_id": {
     "description": "serves a specific article based on requested article_id",
     "queries": [],
-    "exampleArticleId" : "7",
+    "exampleArticleId": "7",
     "exampleResponse": {
       "article": {
         "article_id": 7,
@@ -132,8 +141,10 @@
   "PATCH /api/articles/:article_id": {
     "description": "serves an updated article based on requested article_id and inc_votes in body",
     "queries": [],
-    "exampleArticleId" : "1",
-    "expectedBody" : { "inc_votes": 5 },
+    "exampleArticleId": "1",
+    "expectedBody": {
+      "inc_votes": 5
+    },
     "exampleResponse": {
       "article": {
         "article_id": 1,
@@ -149,8 +160,11 @@
   },
   "GET /api/articles/:article_id/comments": {
     "description": "serves the comments for a specific article based on requested article_id",
-    "queries": ["limit", "p"],
-    "exampleArticleId" : "5",
+    "queries": [
+      "limit",
+      "p"
+    ],
+    "exampleArticleId": "5",
     "exampleResponse": {
       "comments": [
         {
@@ -175,8 +189,8 @@
   "POST /api/articles/:article_id/comments": {
     "description": "serves the new comment for a specific article based on requested article_id and request body",
     "queries": [],
-    "exampleArticleId" : "3",
-    "expectedBody" : {
+    "exampleArticleId": "3",
+    "expectedBody": {
       "username": "butter_bridge",
       "body": "Don't you just LOVE commenting?"
     },
@@ -187,7 +201,6 @@
         "article_id": 3,
         "author": "butter_bridge",
         "votes": 0,
-
         "created_at": "2024-11-26T12:33:05.964Z"
       }
     }
@@ -195,26 +208,25 @@
   "PATCH /api/comments/:comment_id": {
     "description": "serves an updated comment based on requested comment_id and inc_votes in body",
     "queries": [],
-    "exampleCommentId" : "1",
-    "expectedBody" : { "inc_votes": 5 },
+    "exampleCommentId": "1",
+    "expectedBody": {
+      "inc_votes": 5
+    },
     "exampleResponse": {
       "comment": {
-          "comment_id": 1,
-          "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
-          "article_id": 9,
-          "author": "butter_bridge",
-          "votes": 21,
-          "created_at": "2020-04-06T12:17:00.000Z"
+        "comment_id": 1,
+        "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+        "article_id": 9,
+        "author": "butter_bridge",
+        "votes": 21,
+        "created_at": "2020-04-06T12:17:00.000Z"
       }
     }
-  },
-  "DELETE /api/comments/:comment_id": {
-    "description": "serves a 204 status and no content"
   },
   "POST /api/topics": {
     "description": "serves the new topic",
     "queries": [],
-    "expectedBody" : {
+    "expectedBody": {
       "slug": "bananas",
       "description": "the best fruit in the world"
     },
@@ -224,5 +236,8 @@
         "description": "the best fruit in the world"
       }
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "serves a 204 status and no content"
   }
 }
