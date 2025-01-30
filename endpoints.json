@@ -14,6 +14,20 @@
       ]
     }
   },
+  "POST /api/topics": {
+    "description": "serves the new topic",
+    "queries": [],
+    "expectedBody": {
+      "slug": "bananas",
+      "description": "the best fruit in the world"
+    },
+    "exampleResponse": {
+      "topic": {
+        "slug": "bananas",
+        "description": "the best fruit in the world"
+      }
+    }
+  },
   "GET /api/users": {
     "description": "serves an array of all users",
     "queries": [],
@@ -220,20 +234,6 @@
         "author": "butter_bridge",
         "votes": 21,
         "created_at": "2020-04-06T12:17:00.000Z"
-      }
-    }
-  },
-  "POST /api/topics": {
-    "description": "serves the new topic",
-    "queries": [],
-    "expectedBody": {
-      "slug": "bananas",
-      "description": "the best fruit in the world"
-    },
-    "exampleResponse": {
-      "topic": {
-        "slug": "bananas",
-        "description": "the best fruit in the world"
       }
     }
   },
