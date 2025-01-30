@@ -8,8 +8,16 @@
     "exampleResponse": {
       "topics": [
         {
+          "slug": "coding",
+          "description": "Code is love, code is life"
+        },
+        {
+          "slug": "cooking",
+          "description": "Hey good looking, what you got cooking?"
+        },
+        {
           "slug": "football",
-          "description": "Footie!"
+          "description": "FOOTIE!"
         }
       ]
     }
@@ -34,24 +42,19 @@
     "exampleResponse": {
       "users": [
         {
-          "username": "butter_bridge",
-          "name": "jonny",
-          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+          "username": "cooljmessy",
+          "name": "Peter Messy",
+          "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/1/1a/MR_MESSY_4A.jpg/revision/latest/scale-to-width-down/250?cb=20170730171002"
         },
         {
-          "username": "icellusedkars",
-          "name": "sam",
-          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+          "username": "grumpy19",
+          "name": "Paul Grump",
+          "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013"
         },
         {
-          "username": "rogersop",
-          "name": "paul",
-          "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
-        },
-        {
-          "username": "lurker",
-          "name": "do_nothing",
-          "avatar_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+          "username": "happyamy2016",
+          "name": "Amy Happy",
+          "avatar_url": "https://vignette1.wikia.nocookie.net/mrmen/images/7/7f/Mr_Happy.jpg/revision/latest?cb=20140102171729"
         }
       ]
     }
@@ -59,12 +62,12 @@
   "GET /api/users/:username": {
     "description": "serves a specific user based on username",
     "queries": [],
-    "exampleUsername": "icellusedkars",
+    "exampleUsername": "jessjelly",
     "exampleResponse": {
       "user": {
-        "username": "icellusedkars",
-        "name": "sam",
-        "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+        "username": "jessjelly",
+        "name": "Jess Jelly",
+        "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141"
       }
     }
   },
@@ -80,34 +83,34 @@
     "exampleResponse": {
       "articles": [
         {
-          "author": "icellusedkars",
-          "title": "Eight pug gifs that remind me of mitch",
-          "article_id": 3,
-          "topic": "mitch",
-          "created_at": "2020-11-03T09:12:00.000Z",
-          "votes": 0,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-          "comment_count": 2
+          "author": "grumpy19",
+          "title": "The Notorious MSG’s Unlikely Formula For Success",
+          "article_id": 34,
+          "topic": "cooking",
+          "created_at": "2020-11-22T11:13:00.000Z",
+          "votes": 5,
+          "article_img_url": "https://images.pexels.com/photos/2403392/pexels-photo-2403392.jpeg?w=700&h=700",
+          "comment_count": 11
         },
         {
-          "author": "icellusedkars",
-          "title": "A",
+          "author": "tickle122",
+          "title": "The battle for Node.js security has only begun",
+          "article_id": 12,
+          "topic": "coding",
+          "created_at": "2020-11-15T13:25:00.000Z",
+          "votes": 3,
+          "article_img_url": "https://images.pexels.com/photos/10845119/pexels-photo-10845119.jpeg?w=700&h=700",
+          "comment_count": 7
+        },
+        {
+          "author": "grumpy19",
+          "title": "JavaScript’s Apply, Call, and Bind Methods are Essential for JavaScript Professionals",
           "article_id": 6,
-          "topic": "mitch",
-          "created_at": "2020-10-18T01:00:00.000Z",
+          "topic": "coding",
+          "created_at": "2020-11-11T15:09:00.000Z",
           "votes": 0,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-          "comment_count": 1
-        },
-        {
-          "author": "icellusedkars",
-          "title": "Sony Vaio; or, The Laptop",
-          "article_id": 2,
-          "topic": "mitch",
-          "created_at": "2020-10-16T05:03:00.000Z",
-          "votes": 0,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-          "comment_count": 0
+          "article_img_url": "https://images.pexels.com/photos/4383298/pexels-photo-4383298.jpeg?w=700&h=700",
+          "comment_count": 11
         }
       ]
     }
@@ -116,21 +119,21 @@
     "description": "serves the new article for a specific article based on request body",
     "queries": [],
     "expectedBody": {
-      "author": "rogersop",
+      "author": "weegembump",
       "title": "Bananas are the best fruit",
       "body": "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
-      "topic": "cats"
+      "topic": "cooking"
     },
     "exampleResponse": {
       "article": {
-        "author": "rogersop",
+        "author": "weegembump",
         "title": "Bananas are the best fruit",
         "article_id": 14,
         "body": "One medium sized banana can provide up to 33% of our recommended daily amount of Vitamin B6 and they are also an excellent source of Vitamin C – which we all know is great for our immune systems. Bananas also provide magnesium, Vitamin A, iron and copper that are essential to our overall health and wellbeing. They are fat-free, cholesterol-free, and virtually sodium-free. However, they are high in carbohydrates and are not a good food for low-carb diets. And they are definitely not good for cats.",
-        "topic": "cats",
+        "topic": "cooking",
         "created_at": "2024-11-28T14:43:07.364Z",
         "votes": 0,
-        "article_img_url": "https://images.pexels.com/photos/97050/pexels-photo-97050.jpeg?w=700&h=700",
+        "article_img_url": "https://media.post.rvohealth.io/wp-content/uploads/2020/09/bananas-732x549-thumbnail.jpg",
         "comment_count": 0
       }
     }
@@ -141,14 +144,15 @@
     "exampleArticleId": "7",
     "exampleResponse": {
       "article": {
+        "author": "tickle122",
+        "title": "Using React Native: One Year Later",
         "article_id": 7,
-        "title": "Z",
-        "topic": "mitch",
-        "author": "icellusedkars",
-        "body": "I was hungry.",
-        "created_at": "2020-01-07T14:08:00.000Z",
+        "body": "When I interviewed for the iOS developer opening at Discord last spring, the tech lead Stanislav told me: React Native is the future. We will use it to build our iOS app from scratch as soon as it becomes public. As a native iOS developer, I strongly doubted using web technologies to build mobile apps because of my previous experiences with tools like PhoneGap. But after learning and using React Native for a while, I am glad we made that decision.",
+        "topic": "coding",
+        "created_at": "2020-10-18T01:26:00.000Z",
         "votes": 0,
-        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+        "article_img_url": "https://images.pexels.com/photos/6424586/pexels-photo-6424586.jpeg?w=700&h=700",
+        "comment_count": 8
       }
     }
   },
@@ -157,18 +161,19 @@
     "queries": [],
     "exampleArticleId": "1",
     "expectedBody": {
-      "inc_votes": 5
+      "inc_votes": 1
     },
     "exampleResponse": {
       "article": {
+        "author": "jessjelly",
+        "title": "Running a Node App",
         "article_id": 1,
-        "title": "Living in the shadow of a great man",
-        "topic": "mitch",
-        "author": "butter_bridge",
-        "body": "I find this existence challenging",
-        "created_at": "2020-07-09T20:11:00.000Z",
-        "votes": 105,
-        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+        "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
+        "topic": "coding",
+        "created_at": "2020-11-07T06:03:00.000Z",
+        "votes": 1,
+        "article_img_url": "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700",
+        "comment_count": 8
       }
     }
   },
@@ -182,21 +187,29 @@
     "exampleResponse": {
       "comments": [
         {
-          "comment_id": 15,
-          "body": "I am 100% sure that we're not completely sure.",
+          "comment_id": 144,
+          "body": "Placeat voluptatum consequatur ducimus et eum molestiae impedit eveniet. Recusandae rerum voluptas quia mollitia quam velit iusto. Eum eos similique minima necessitatibus nemo. Iure deleniti omnis enim animi iste delectus et consequuntur.",
           "article_id": 5,
-          "author": "butter_bridge",
-          "votes": 1,
-          "created_at": "2020-11-24T00:08:00.000Z"
-        },
-        {
-          "comment_id": 14,
-          "body": "What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge.",
+          "author": "grumpy19",
+          "votes": 19,
+          "created_at": "2020-11-23T17:00:00.000Z"
+          },
+          {
+          "comment_id": 116,
+          "body": "Praesentium dolor doloribus sint. Quisquam molestiae dolorum asperiores animi omnis.",
           "article_id": 5,
-          "author": "icellusedkars",
-          "votes": 16,
-          "created_at": "2020-06-09T05:00:00.000Z"
-        }
+          "author": "weegembump",
+          "votes": 3,
+          "created_at": "2020-09-03T02:06:00.000Z"
+          },
+          {
+          "comment_id": 18,
+          "body": "Dicta aut quo unde cupiditate dolorum. Voluptas mollitia exercitationem vel porro dolor. Ea autem est pariatur.",
+          "article_id": 5,
+          "author": "jessjelly",
+          "votes": 6,
+          "created_at": "2020-08-15T18:11:00.000Z"
+          }
       ]
     }
   },
@@ -205,7 +218,7 @@
     "queries": [],
     "exampleArticleId": "3",
     "expectedBody": {
-      "username": "butter_bridge",
+      "username": "tickle122",
       "body": "Don't you just LOVE commenting?"
     },
     "exampleResponse": {
@@ -213,7 +226,7 @@
         "comment_id": 19,
         "body": "Don't you just LOVE commenting?",
         "article_id": 3,
-        "author": "butter_bridge",
+        "author": "tickle122",
         "votes": 0,
         "created_at": "2024-11-26T12:33:05.964Z"
       }
@@ -222,19 +235,19 @@
   "PATCH /api/comments/:comment_id": {
     "description": "serves an updated comment based on requested comment_id and inc_votes in body",
     "queries": [],
-    "exampleCommentId": "1",
+    "exampleCommentId": "213",
     "expectedBody": {
       "inc_votes": 5
     },
     "exampleResponse": {
       "comment": {
-        "comment_id": 1,
-        "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
-        "article_id": 9,
-        "author": "butter_bridge",
-        "votes": 21,
-        "created_at": "2020-04-06T12:17:00.000Z"
-      }
+        "comment_id": 213,
+        "body": "Voluptas accusantium eius earum aliquid. Earum et rerum. Expedita dolores ut autem fuga id accusamus et.",
+        "article_id": 7,
+        "author": "weegembump",
+        "votes": 19,
+        "created_at": "2020-11-21T01:09:00.000Z"
+        }
     }
   },
   "DELETE /api/comments/:comment_id": {
